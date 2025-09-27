@@ -61,6 +61,7 @@ message CreateGroupRequest {
   string name = 1;
   repeated int64 api_ids = 2;
   string api_key = 4;
+  repeated string endpoints = 5;
 }
 message CreateGroupResponse {
   Group group = 1;

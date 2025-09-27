@@ -613,6 +613,7 @@ type CreateGroupRequest struct {
 	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	ApiIds        []int64                `protobuf:"varint,2,rep,packed,name=api_ids,json=apiIds,proto3" json:"api_ids,omitempty"`
 	ApiKey        string                 `protobuf:"bytes,4,opt,name=api_key,json=apiKey,proto3" json:"api_key,omitempty"`
+	Endpoints     []string               `protobuf:"bytes,5,rep,name=endpoints,proto3" json:"endpoints,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -666,6 +667,13 @@ func (x *CreateGroupRequest) GetApiKey() string {
 		return x.ApiKey
 	}
 	return ""
+}
+
+func (x *CreateGroupRequest) GetEndpoints() []string {
+	if x != nil {
+		return x.Endpoints
+	}
+	return nil
 }
 
 type CreateGroupResponse struct {
@@ -1203,11 +1211,12 @@ const file_api_gaurd_proto_rawDesc = "" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x17\n" +
 	"\aapi_ids\x18\x03 \x03(\x03R\x06apiIds\x12\x17\n" +
-	"\aapi_key\x18\x04 \x01(\tR\x06apiKey\"Z\n" +
+	"\aapi_key\x18\x04 \x01(\tR\x06apiKey\"x\n" +
 	"\x12CreateGroupRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x17\n" +
 	"\aapi_ids\x18\x02 \x03(\x03R\x06apiIds\x12\x17\n" +
-	"\aapi_key\x18\x04 \x01(\tR\x06apiKey\"A\n" +
+	"\aapi_key\x18\x04 \x01(\tR\x06apiKey\x12\x1c\n" +
+	"\tendpoints\x18\x05 \x03(\tR\tendpoints\"A\n" +
 	"\x13CreateGroupResponse\x12*\n" +
 	"\x05group\x18\x01 \x01(\v2\x14.accesscontrol.GroupR\x05group\"!\n" +
 	"\x0fGetGroupRequest\x12\x0e\n" +

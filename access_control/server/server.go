@@ -93,9 +93,22 @@ func (s *AccessControlServer) GetApi(ctx context.Context, req *accesscontrolpb.G
 
 // ---- GROUP CRUD ----
 func (s *AccessControlServer) CreateGroup(ctx context.Context, req *accesscontrolpb.CreateGroupRequest) (*accesscontrolpb.CreateGroupResponse, error) {
+
+	apiIds := []int64{}
+	for _, endpoint := range req.Endpoints {
+		api, err := s.service.ApiStore(ctx, &domain.Api{
+			Endpoint: endpoint,
+		})
+		if err != nil {
+			return nil, err
+		}
+
+		apiIds = append(apiIds, int64(api.Id))
+	}
+
 	group, err := s.service.GroupStore(ctx, &domain.Group{
 		Name:        req.Name,
-		EndpointIds: req.ApiIds,
+		EndpointIds: apiIds,
 		ApiKey:      req.ApiKey,
 	})
 	if err != nil {
