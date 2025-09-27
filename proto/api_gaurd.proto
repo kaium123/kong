@@ -1,0 +1,161 @@
+syntax = "proto3";
+
+package accesscontrol;
+
+option go_package = "github.com/api_gaurd/proto/acl;aclpb";
+import "google/api/annotations.proto";
+
+
+// ----------- API ENTITY -----------
+message Api {
+  string id = 1;
+  string name = 2;
+  string endpoint = 3;
+}
+
+message CreateApiRequest {
+  string name = 1;
+  string endpoint = 2;
+}
+message CreateApiResponse {
+  Api api = 1;
+}
+
+message GetApiRequest {
+  string id = 1;
+}
+message GetApiResponse {
+  Api api = 1;
+}
+
+message UpdateApiRequest {
+  string id = 1;
+  string name = 2;
+  string endpoint = 3;
+}
+message UpdateApiResponse {
+  Api api = 1;
+}
+
+message DeleteApiRequest {
+  string id = 1;
+}
+message DeleteApiResponse {
+  bool success = 1;
+}
+
+message ListApisRequest {}
+message ListApisResponse {
+  repeated Api apis = 1;
+}
+
+// ----------- GROUP ENTITY -----------
+message Group {
+  int64 id = 1;
+  string name = 2;
+  repeated int64 api_ids = 3; // which APIs the group can access
+  string api_key = 4;
+}
+
+message CreateGroupRequest {
+  string name = 1;
+  repeated int64 api_ids = 2;
+  string api_key = 4;
+}
+message CreateGroupResponse {
+  Group group = 1;
+}
+
+message GetGroupRequest {
+  int64 id = 1;
+}
+message GetGroupResponse {
+  Group group = 1;
+}
+
+message UpdateGroupRequest {
+  int64 id = 1;
+  string name = 2;
+  repeated string api_ids = 3;
+}
+message UpdateGroupResponse {
+  Group group = 1;
+}
+
+message DeleteGroupRequest {
+  int64 id = 1;
+}
+message DeleteGroupResponse {
+  bool success = 1;
+}
+
+message ListGroupsRequest {}
+message ListGroupsResponse {
+  repeated Group groups = 1;
+}
+
+message VerifyRequest {
+  string api_key = 1;
+  string endpoint = 2;
+}
+
+message VerifyResponse {
+  bool verified = 1;
+}
+
+// ----------- SERVICE DEFINITION -----------
+service AccessControlService {
+
+  // Create API
+  rpc CreateApi(CreateApiRequest) returns (CreateApiResponse) {
+    option (google.api.http) = {
+      post: "/v1/apis"
+      body: "*"
+    };
+  }
+
+  // Get API
+  rpc GetApi(GetApiRequest) returns (GetApiResponse) {
+    option (google.api.http) = {
+      get: "/v1/apis/{id}"
+    };
+  }
+
+  // Uncomment and map if needed
+  /*
+  rpc UpdateApi(UpdateApiRequest) returns (UpdateApiResponse) {
+    option (google.api.http) = {
+      put: "/v1/apis/{id}"
+      body: "*"
+    };
+  }
+
+  rpc DeleteApi(DeleteApiRequest) returns (DeleteApiResponse) {
+    option (google.api.http) = {
+      delete: "/v1/apis/{id}"
+    };
+  }
+
+  rpc ListApis(ListApisRequest) returns (ListApisResponse) {
+    option (google.api.http) = {
+      get: "/v1/apis"
+    };
+  }
+  */
+
+  // Create Group
+  rpc CreateGroup(CreateGroupRequest) returns (CreateGroupResponse) {
+    option (google.api.http) = {
+      post: "/v1/groups"
+      body: "*"
+    };
+  }
+
+  // Verify
+  rpc Verify(VerifyRequest) returns (VerifyResponse) {
+    option (google.api.http) = {
+      post: "/v1/verify"
+      body: "*"
+    };
+  }
+}
